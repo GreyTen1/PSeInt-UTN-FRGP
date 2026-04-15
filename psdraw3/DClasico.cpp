@@ -77,8 +77,15 @@ void Entity::DrawShapeSolid(const float *color,int x, int y, int w, int h) {
 				}
 			}
 		} else {
-			glVertex2i(x+w/2+margin,y); glVertex2i(x-w/2+margin,y); 
-			glVertex2i(x+w/2-margin,y-h); glVertex2i(x-w/2-margin,y-h);
+			if (type==ET_LEER) {
+				// trapezoid: full-width top, narrower bottom (GL_QUAD_STRIP: left/right pairs per row)
+				glVertex2i(x-w/2,       y);   glVertex2i(x+w/2,       y);
+				glVertex2i(x-w/2+margin*2,y-h); glVertex2i(x+w/2-margin*2,y-h);
+			} else {
+				// trapezoid: narrower top, full-width bottom (ET_ESCRIBIR)
+				glVertex2i(x-w/2+margin*2,y);   glVertex2i(x+w/2-margin*2,y);
+				glVertex2i(x-w/2,       y-h);   glVertex2i(x+w/2,       y-h);
+			}
 		}
 	} else if (type==ET_SEGUN) {
 		glVertex2i(x,y); glVertex2i(x+w/2,y-h); glVertex2i(x-w/2,y-h); glVertex2i(x,y-h);
@@ -124,8 +131,19 @@ void Entity::DrawShapeBorder(const float *color,int x, int y, int w, int h) {
 					glVertex2d(ax0+sinx[i]*r,ay+cosx[i]*h);
 			}
 		} else {
-			glVertex2i(x-w/2+margin,y); glVertex2i(x+w/2+margin,y);
-			glVertex2i(x+w/2-margin,y-h); glVertex2i(x-w/2-margin,y-h);
+			if (type==ET_LEER) {
+				// trapezoid: full-width top, narrower bottom (GL_LINE_LOOP: clockwise around perimeter)
+				glVertex2i(x-w/2,       y);    // top-left
+				glVertex2i(x+w/2,       y);    // top-right
+				glVertex2i(x+w/2-margin*2,y-h); // bottom-right
+				glVertex2i(x-w/2+margin*2,y-h); // bottom-left
+			} else {
+				// trapezoid: narrower top, full-width bottom (ET_ESCRIBIR)
+				glVertex2i(x-w/2+margin*2,y);   // top-left
+				glVertex2i(x+w/2-margin*2,y);   // top-right
+				glVertex2i(x+w/2,       y-h);   // bottom-right
+				glVertex2i(x-w/2,       y-h);   // bottom-left
+			}
 		}
 	} else if (type==ET_SEGUN) {
 		glVertex2i(x,y); glVertex2i(x+w/2,y-h); glVertex2i(x-w/2,y-h);
