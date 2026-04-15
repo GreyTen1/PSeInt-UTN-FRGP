@@ -7,3 +7,7 @@ Para ejecutar el programa simplemente basta con ir al release y bajarse la versi
 ⚠️ Atencion ⚠️
 
 Esta todavia en fase de prueba, el unico binario disponible es el de Linux
+
+(para extraerlo, simplemente ejecuten "tar -xvf nombre_del_comprimido.tar.gz")
+
+ejecutando "./pseint" les deberia iniciar el programa
